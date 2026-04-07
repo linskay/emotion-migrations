@@ -49,6 +49,8 @@ Production-ready backend-сервис для синхронизации пост
 - `app.formatting.*`
 
 См. `src/main/resources/application-example.properties`.
+- Шаблон переменных окружения: `.env.example` (для локального старта без хранения секретов в Git).
+
 
 ## REST API
 - `GET /api/v1/system/health`
