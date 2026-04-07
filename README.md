@@ -1,4 +1,4 @@
-# emotion-mifrations
+# emotion-migrations
 
 Production-ready backend-сервис для синхронизации постов из Telegram-каналов в VK-сообщества с clean architecture, файловым state storage и поддержкой редактирования постов.
 
