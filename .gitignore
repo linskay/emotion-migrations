@@ -1,0 +1,42 @@
+# Maven / Java
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Runtime / temp
+tmp/
+temp/
+*.tmp
+
+# Spring Boot / app runtime
+/data/
+*.pid
+
+# Test artifacts
+surefire-reports/
+failsafe-reports/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+secrets/
+
+# Generated docs / reports
+/site/
+/reports/
