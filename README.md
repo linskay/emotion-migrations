@@ -1,4 +1,4 @@
-# emotion-migrations
+# emotion-mifrations
 
 Production-ready backend-сервис для синхронизации постов из Telegram-каналов в VK-сообщества с clean architecture, файловым state storage и поддержкой редактирования постов.
 
@@ -80,7 +80,13 @@ mvn spring-boot:run
 - poll creation (через use case);
 - global exception handler.
 
+## Реализовано дополнительно
+1. VK adapter переведён на HTTP-взаимодействие с upload flow для `photo` и `video` (через `photos.getWallUploadServer`/`photos.saveWallPhoto` и `video.save`).
+2. Event-journal вынесен в файловый JSONL-журнал с ротацией по размеру и лимитом архивов.
+3. TDLib ingestion слой переведён на gateway-модель (`TdlibGateway` + `TdlibTelegramSourceAdapter`) для подключения реального клиента без утечки SDK в domain/application.
+
 ## Возможные улучшения
-1. Подключить реальный TDLib adapter и VK HTTP adapter с upload/video flow.
-2. Вынести event-journal в ротационный файл.
-3. Добавить интеграционные тесты с WireMock.
+1. Подключить конкретную реализацию `TdlibGateway` на выбранной Java-библиотеке TDLib (tdlight/jni) с авторизацией и durable session state.
+2. Добавить интеграционные тесты VK API и TDLib-адаптера с WireMock/Testcontainers.
+3. Добавить политику повторной загрузки неуспешных media-групп в отдельной очереди.
+

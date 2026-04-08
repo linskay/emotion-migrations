@@ -14,7 +14,8 @@ import org.junit.jupiter.api.Test;
 
 import com.emotion.mifrations.config.AppProperties;
 import com.emotion.mifrations.domain.model.PostMapping;
-import com.emotion.mifrations.infrastructure.logging.InMemoryEventLogAdapter;
+import com.emotion.mifrations.domain.port.EventLogPort;
+import static org.mockito.Mockito.mock;
 import com.emotion.mifrations.infrastructure.state.FileStateStorageAdapter;
 
 class FileStateStorageAdapterTest {
@@ -27,7 +28,7 @@ class FileStateStorageAdapterTest {
 
     @Test
     void shouldPersistAndLoad() {
-        FileStateStorageAdapter adapter = new FileStateStorageAdapter(props(), new InMemoryEventLogAdapter(props()));
+        FileStateStorageAdapter adapter = new FileStateStorageAdapter(props(), mock(EventLogPort.class));
         adapter.init();
         adapter.save(mapping(Instant.now()));
         assertTrue(adapter.find(1, 2).isPresent());
@@ -35,7 +36,7 @@ class FileStateStorageAdapterTest {
 
     @Test
     void shouldPurgeOlderThan5Days() {
-        FileStateStorageAdapter adapter = new FileStateStorageAdapter(props(), new InMemoryEventLogAdapter(props()));
+        FileStateStorageAdapter adapter = new FileStateStorageAdapter(props(), mock(EventLogPort.class));
         adapter.init();
         adapter.save(mapping(Instant.now().minus(6, ChronoUnit.DAYS)));
         adapter.purgeOlderThanDays(5);
@@ -56,12 +57,12 @@ class FileStateStorageAdapterTest {
 
     private AppProperties props() {
         return new AppProperties(
-                new AppProperties.Telegram(new AppProperties.Telegram.Tdlib(1, "h", "+1"), List.of()),
-                new AppProperties.Vk("t", "5.199", "url"),
+                new AppProperties.Telegram(new AppProperties.Telegram.Tdlib(1, "h", "+1", "build/tdlib-db", "build/tdlib-files", 100), List.of()),
+                new AppProperties.Vk("t", "5.199", "https://api.vk.com/method", "ua", "build/tmp-media"),
                 new AppProperties.State(file.toString(), 5),
                 new AppProperties.Retry(3, "PT0.001S", 2),
                 new AppProperties.Formatting("ЭмоциON"),
                 new AppProperties.Notifications(false, "", ""),
-                new AppProperties.Events(100));
+                new AppProperties.Events(100, "build/events", "events.log", 4096, 3));
     }
 }

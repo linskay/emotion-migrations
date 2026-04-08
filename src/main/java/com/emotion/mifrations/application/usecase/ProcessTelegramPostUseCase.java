@@ -103,7 +103,7 @@ public class ProcessTelegramPostUseCase {
             if (post.media() != null) {
                 for (TelegramMedia media : post.media()) {
                     if (media.type().name().equals("PHOTO") || media.type().name().equals("VIDEO")) {
-                        String attachment = retryExecutor.execute("media-transfer", () -> transferMedia(media));
+                        String attachment = retryExecutor.execute("media-transfer", () -> transferMedia(post.channelId(), media));
                         attachments.add(attachment);
                     }
                 }
@@ -127,13 +127,13 @@ public class ProcessTelegramPostUseCase {
         }
     }
 
-    private String transferMedia(TelegramMedia media) {
+    private String transferMedia(long channelId, TelegramMedia media) {
         if (media.url() == null || media.url().isBlank()) {
             throw new MediaDownloadException("Отсутствует URL медиа: " + media.mediaId());
         }
         return switch (media.type()) {
-            case PHOTO -> "photo_ref_" + media.mediaId();
-            case VIDEO -> "video_ref_" + media.mediaId();
+            case PHOTO -> vkPublisher.uploadPhoto(channelResolver.resolve(channelId).vkCommunityId(), media.url());
+            case VIDEO -> vkPublisher.uploadVideo(channelResolver.resolve(channelId).vkCommunityId(), media.url());
             default -> throw new MediaDownloadException("Неподдерживаемый тип медиа для публикации: " + media.type());
         };
     }
