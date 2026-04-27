@@ -73,12 +73,17 @@ public class FileBackedRollingEventLogAdapter implements EventLogPort {
     }
 
     private void push(String level, String code, String message) {
+        String correlationId = MDC.get("correlationId");
+        if (correlationId == null || correlationId.isBlank()) {
+            correlationId = UUID.randomUUID().toString();
+        }
+
         EventRecord event = EventRecord.builder()
                 .time(Instant.now())
                 .level(level)
                 .code(code)
                 .message(message)
-                .correlationId(MDC.getOrDefault("correlationId", UUID.randomUUID().toString()))
+                .correlationId(correlationId)
                 .build();
         if (memory.size() >= maxSize) {
             memory.removeLast();
