@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.slf4j.MDC;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import com.emotion.mifrations.config.AppProperties;
@@ -21,6 +22,7 @@ import com.emotion.mifrations.domain.port.EventLogPort;
 
 import jakarta.annotation.PostConstruct;
 
+@Primary
 @Component
 public class FileBackedRollingEventLogAdapter implements EventLogPort {
     private final Deque<EventRecord> memory;
