@@ -22,7 +22,7 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn clean package -DskipTests
+        run: mvn -B clean package -Dmaven.test.skip=true
 
       - name: Rename jar to main.jar
         run: cp target/emotion-mifrations-1.0.0.jar main.jar
