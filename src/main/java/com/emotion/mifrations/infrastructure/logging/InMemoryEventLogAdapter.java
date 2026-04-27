@@ -46,12 +46,18 @@ public class InMemoryEventLogAdapter implements EventLogPort {
         if (events.size() >= maxSize) {
             events.removeLast();
         }
+
+        String correlationId = MDC.get("correlationId");
+        if (correlationId == null || correlationId.isBlank()) {
+            correlationId = UUID.randomUUID().toString();
+        }
+
         events.addFirst(EventRecord.builder()
                 .time(Instant.now())
                 .level(level)
                 .code(code)
                 .message(message)
-                .correlationId(MDC.getOrDefault("correlationId", UUID.randomUUID().toString()))
+                .correlationId(correlationId)
                 .build());
     }
 }
