@@ -1,5 +1,7 @@
 # emotion-mifrations
 
+[![Build main.jar](https://github.com/linskay/emotion-migrations/actions/workflows/build-main-jar.yml/badge.svg)](https://github.com/linskay/emotion-migrations/actions/workflows/build-main-jar.yml)
+
 Production-ready backend-сервис для синхронизации постов из Telegram-каналов в VK-сообщества с clean architecture, файловым state storage и поддержкой редактирования постов.
 
 ## Ключевые архитектурные решения
@@ -89,4 +91,3 @@ mvn spring-boot:run
 1. Подключить конкретную реализацию `TdlibGateway` на выбранной Java-библиотеке TDLib (tdlight/jni) с авторизацией и durable session state.
 2. Добавить интеграционные тесты VK API и TDLib-адаптера с WireMock/Testcontainers.
 3. Добавить политику повторной загрузки неуспешных media-групп в отдельной очереди.
-
