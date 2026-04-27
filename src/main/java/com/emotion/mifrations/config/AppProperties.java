@@ -21,7 +21,7 @@ public record AppProperties(@Valid Telegram telegram,
                             @Valid Notifications notifications,
                             @Valid Events events) {
 
-    public record Telegram(@Valid Tdlib tdlib, @NotEmpty List<@Valid Channel> channels) {
+    public record Telegram(String botToken, @Valid Tdlib tdlib, @NotEmpty List<@Valid Channel> channels) {
         public record Tdlib(@Min(1) int apiId,
                             @NotBlank String apiHash,
                             @NotBlank String phoneNumber,
